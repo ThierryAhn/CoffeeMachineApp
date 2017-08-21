@@ -1,0 +1,76 @@
+﻿@model CoffeeMachineApp.WebUI.Models.CoffeeMachineViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Machine à café</h2>
+
+@using (Html.BeginForm("Result", "Home", FormMethod.Post)) 
+{
+    <p>
+        <label>
+            <span>Utiliser badge</span>
+            @Html.CheckBoxFor(x => x.UseBadge, new { @id = "badge-check"})
+        </label>
+        @Html.DropDownListFor(x => x.BadgeID, new SelectList(Model.Badges, "BadgeID", "BadgeName"), new { @id = "badge-list"})
+    </p>
+    
+    <p class="coffee-machine">
+        Type de boisson 
+        @Html.DropDownListFor(x => x.ProductID, new SelectList(Model.Products, "ProductID", "Name"))
+    </p>
+    
+    <p class="coffee-machine">
+        Quantité de sucre
+        @Html.DropDownListFor(x => x.SugarQuantity, new []{
+           new SelectListItem(){Text = "1", Value = "1"} ,
+           new SelectListItem(){Text = "2", Value = "2"} ,
+           new SelectListItem(){Text = "3", Value = "3"} ,
+           new SelectListItem(){Text = "4", Value = "4"} ,
+           new SelectListItem(){Text = "5", Value = "5"} ,
+        }, "Choisir une option")
+    </p>
+    
+    <p class="coffee-machine">
+        <label>
+            <span>Enregistrer sur badge</span>
+            @Html.CheckBoxFor(x => x.SaveDrink)
+        </label>
+        @Html.DropDownListFor(x => x.SaveBadgeID, new SelectList(Model.Badges, "BadgeID", "BadgeName"), new { @id = "badge-list"})
+    </p>
+    
+    <p>
+        <label>
+            <span>Utiliser Mug</span>
+            @Html.CheckBoxFor(x => x.UseMug)
+        </label>
+    </p>
+    
+    
+    
+    <input type="submit" value="Préparer boisson"/>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        
+        $(document).ready(function () {
+            $('#badge-check').prop("checked", false);
+            $('#badge-list').hide();
+        });
+
+        $(document).on("click", "#badge-check", function () {
+            if ($('#badge-check').is(':checked')) {
+                $('#badge-list').show();
+                $('.coffee-machine').hide();
+            } else {
+                $('#badge-list').hide();
+                $('.coffee-machine').show();
+            }
+        });
+    </script>
+}
+
+
